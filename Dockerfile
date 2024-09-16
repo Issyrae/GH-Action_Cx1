@@ -3,9 +3,11 @@ FROM checkmarx/ast-cli:2.2.3
 
 USER root
 
-#Copy the entrypoint script and properties used for the action
-COPY entrypoint.sh /app/entrypoint.sh
-COPY cleanup.sh /app/cleanup.sh
+RUN mkdir -p /log
 
-RUN chmod +x /app/entrypoint.sh \
-    && chmod +x /app/cleanup.sh
+USER nonroot
+
+#Copy the entrypoint script and properties used for the action
+COPY --chmod=555 entrypoint.sh /app/entrypoint.sh
+COPY --chmod=555 cleanup.sh /app/cleanup.sh
+
